@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# In the name of Allah
 
 import os
 import time
@@ -16,7 +15,7 @@ import locale
 
 import cairo
 
-from PIL import Image, ImageTk
+from pillow import Image, ImageTk
 
 from ewmh import EWMH
 
@@ -34,6 +33,7 @@ from gi.repository import Gtk
 
 gi.require_version('Rsvg', '2.0')
 from gi.repository import Rsvg
+
 
 class Main:
     def __init__(self):
@@ -64,12 +64,12 @@ class Main:
         self.KeyboardListener = KeyboardListener
         self.pressed_key = None
         self.released_key = None
-        
+
         self.MouseListener = MouseListener
         self.click_pos_x, self.click_pos_y = 0, 0
         self.mouse_pos_x, self.mouse_pos_y = 0, 0
         self.new_click = False
-        
+
         self.keyboard = Controller()
         self.keyboard_layouts_code = {'00001006': 'ir', '00000002': 'us'}
         self.keyboard_layouts = self.get_keyboard_layouts()
@@ -125,7 +125,7 @@ class Main:
         shell_style.configure(
             "T.TFrame",
             background="#222",
-            )
+        )
 
         # T.TLabel
         shell_style.configure(
@@ -133,7 +133,7 @@ class Main:
             foreground="#ddd",
             background="#222",
             font=('Vazir', 9, 'normal')
-            )
+        )
 
         # T.TButton
         shell_style.configure(
@@ -143,7 +143,7 @@ class Main:
             relief="flat",
             font=('Vazir', 9, 'normal'),
             justify='center',
-            )
+        )
         shell_style.map(
             "T.TButton",
             foreground=[('pressed', '#d8d8d8'), ('active', '#dadada')],
@@ -159,7 +159,7 @@ class Main:
             foreground="#ddd",
             background="#222",
             justify='center',
-            )
+        )
         shell_style.map(
             "TSmwin.TLabel",
             foreground=[('pressed', '#d8d8d8'), ('active', '#dadada')],
@@ -174,7 +174,7 @@ class Main:
         shell_style.configure(
             "W.TFrame",
             background="#222",
-            )
+        )
 
         # W.TButton
         shell_style = ttk.Style()
@@ -184,7 +184,7 @@ class Main:
             background="#222",
             relief="flat",
             font=('Vazir', 9, 'normal'),
-            )
+        )
         shell_style.map(
             "W.TButton",
             foreground=[('pressed', '#d8d8d8'), ('active', '#dadada')],
@@ -199,7 +199,7 @@ class Main:
         shell_style.configure(
             "A.TFrame",
             background="#333",
-            )
+        )
 
         # A.TButton
         shell_style = ttk.Style()
@@ -212,7 +212,7 @@ class Main:
             wraplength=170,
             justify='center',
             font=('Vazir', 9, 'normal'),
-            )
+        )
         shell_style.map(
             "A.TButton",
             foreground=[('pressed', '#eee'), ('active', '#e5e5e5')],
@@ -231,7 +231,7 @@ class Main:
             relief="flat",
             font=('Vazir', 9, 'normal'),
             width=3,
-            )
+        )
         shell_style.map(
             "AS.TButton",
             foreground=[('pressed', '#e0e0e0'), ('active', '#e2e2e2')],
@@ -251,7 +251,7 @@ class Main:
             relief="flat",
             font=('Vazir', 9, 'normal'),
             justify='center',
-            )
+        )
         shell_style.map(
             "SM.TButton",
             foreground=[('pressed', '#dadada'), ('active', '#dbdbdb')],
@@ -260,22 +260,22 @@ class Main:
             ],
             relief=[('pressed', '!disabled', 'flat'), ('active', 'flat')],
         )
-        
+
         # SM.Horizontal.TProgressbar
         shell_style = ttk.Style()
         shell_style.configure(
             "SM.Horizontal.TProgressbar",
             background="#333",
             thickness=5
-            )
-        
+        )
+
         # SM.TLabel
         shell_style = ttk.Style()
         shell_style.configure(
             "SM.TLabel",
             foreground="#ddd",
             background="#333",
-            )
+        )
 
         # SP.TButton
         shell_style = ttk.Style()
@@ -287,7 +287,7 @@ class Main:
             relief="flat",
             font=('Vazir', 12, 'normal'),
             justify='center',
-            )
+        )
         shell_style.map(
             "SP.TButton",
             foreground=[('pressed', '#d8d8d8'), ('active', '#dadada')],
@@ -296,7 +296,7 @@ class Main:
             ],
             relief=[('pressed', '!disabled', 'flat'), ('active', 'flat')],
         )
-        
+
         # K.TButton
         shell_style = ttk.Style()
         shell_style.configure(
@@ -307,7 +307,7 @@ class Main:
             width=6,
             justify='center',
             font=('Vazir', 9, 'normal'),
-            )
+        )
         shell_style.map(
             "K.TButton",
             foreground=[('pressed', '#eee'), ('active', '#ececec')],
@@ -316,7 +316,7 @@ class Main:
             ],
             relief=[('pressed', '!disabled', 'flat'), ('active', 'flat')],
         )
-        
+
         # small shell
         self.create_small_shell()
 
@@ -328,13 +328,13 @@ class Main:
             'system-shutdown-symbolic',
             (18, 18),
             shell=True
-            )
+        )
         smf_shutdown = ttk.Label(
             self.smf,
             image=shutdown_icon,
             style="TSmwin.TLabel",
             cursor='hand2',
-            )
+        )
         smf_shutdown.pack(side=self.END, ipady=11, ipadx=2)
         smf_shutdown.bind('<Button-1>', self.clicked_smf)
 
@@ -356,7 +356,7 @@ class Main:
             self.root,
             style='T.TLabel',
             font=('Vazir', 10, 'normal'),
-            )
+        )
         self.clock.pack(side=self.END, padx=5)
         self.tick()
 
@@ -368,21 +368,21 @@ class Main:
             cursor='hand2',
             text=self.keyboard_active_layout,
             width=4,
-            )
+        )
         self.keylayb.pack(side=self.END, ipady=5)
-        
+
         # virtual keyboard
         virkeyb = ttk.Button(
             self.root,
             command=self.show_hide_virkey,
             style='T.TButton',
             cursor='hand2',
-            )
+        )
         keyboard_icon = self.create_icon('keyboard', (24, 24), shell=True)
         if keyboard_icon:
             virkeyb['image'] = keyboard_icon
         else:
-            virkeyb['text']=self.translate_word('virtual keyboard')
+            virkeyb['text'] = self.translate_word('virtual keyboard')
         virkeyb.pack(side=self.END, ipady=5)
 
         # apps menu
@@ -392,7 +392,7 @@ class Main:
             text=self.translate_word('Applications'),
             style='T.TButton',
             cursor='hand2',
-            )
+        )
         self.awinb.pack(side=self.START, ipady=5)
 
         # list windows
@@ -401,12 +401,12 @@ class Main:
             command=self.show_hide_windows_list,
             style='T.TButton',
             cursor='hand2',
-            )
+        )
         wl_icon = self.create_icon('restore-window', (24, 24), shell=True)
         if wl_icon:
             self.fwlb['image'] = wl_icon
         else:
-            self.fwlb['text']=self.translate_word('Windows')
+            self.fwlb['text'] = self.translate_word('Windows')
         self.fwlb.pack(side=self.START, ipady=5)
         self.windows_button = []
 
@@ -419,7 +419,7 @@ class Main:
         self.root.mainloop()
 
     def connection_check(self, hostname):
-          try:
+        try:
             # see if we can resolve the host name -- tells us if there is
             # a DNS listening
             host = socket.gethostbyname(hostname)
@@ -427,10 +427,10 @@ class Main:
             # reachable
             s = socket.create_connection((host, 80), 2)
             return True
-          except:
-             pass
-          return False
-    
+        except:
+            pass
+        return False
+
     def connection_checker(self):
         connected = self.connection_check('www.python.org')
         if connected:
@@ -456,7 +456,7 @@ class Main:
 
     def hide_small_shell(self, event):
         if str(event.type) == 'Motion':
-            if event.y > 22:    # 26-26(height_small_shell)//4
+            if event.y > 22:  # 26-26(height_small_shell)//4
                 self.small_shell.withdraw()
                 self.animation_show_root()
         else:
@@ -468,10 +468,11 @@ class Main:
             self.small_shell.geometry('{width}x{height}+0-{yoffset}'.format(
                 width=self.root.winfo_screenwidth(),
                 height=26,
-                yoffset=new_height-26
+                yoffset=new_height - 26
             ))
             if new_height != 26:
-                self.small_shell.after(8, animation_show, new_height+1)
+                self.small_shell.after(8, animation_show, new_height + 1)
+
         try:
             self.small_shell.deiconify()
         except AttributeError:
@@ -489,28 +490,28 @@ class Main:
             self.small_shell_click_event = self.small_shell.bind(
                 '<Motion>',
                 self.hide_small_shell
-                )
+            )
             self.small_shell_click_event = self.small_shell.bind(
                 '<Button-1>',
                 self.hide_small_shell
-                )
-            
+            )
+
             # language keybord
             self.keylayb_small_shell = ttk.Label(
                 self.small_shell,
                 style='T.TLabel',
                 font=('Vazir', 9, 'normal'),
                 text=self.keyboard_active_layout,
-                )
+            )
             self.keylayb_small_shell.pack(side=self.END, ipady=5, padx=6)
-            
+
             # clock
             self.time1 = ''
             self.clock_small_shell = ttk.Label(
                 self.small_shell,
                 style='T.TLabel',
                 font=('Vazir', 10, 'normal'),
-                )
+            )
             self.clock_small_shell.pack(side=tk.BOTTOM, padx=5)
         finally:
             animation_show()
@@ -519,12 +520,12 @@ class Main:
         self.root.geometry('{width}x{height}+0+{yoffset}'.format(
             width=self.root.winfo_screenwidth(),
             height=self.height_root_window,
-            yoffset=self.root.winfo_screenheight()+new_height
+            yoffset=self.root.winfo_screenheight() + new_height
         ))
         if new_height == 1:
             self.hide_all_wins()
         if new_height != self.height_root_window:
-            self.root.after(8, self.animation_hide_root, new_height+1, end_cmd)
+            self.root.after(8, self.animation_hide_root, new_height + 1, end_cmd)
         else:
             self.root.withdraw()
             if end_cmd:
@@ -542,8 +543,8 @@ class Main:
             text = text[:-1]
         while text.find(' ') != -1:
             index = text.find(' ')
-            text = '{}{}'.format(text[:index], text[index+1:])
-            
+            text = '{}{}'.format(text[:index], text[index + 1:])
+
         layouts = text.split(',')
         if not layouts[-1]:
             layouts = layouts[:-1]
@@ -577,20 +578,20 @@ class Main:
             pass
 
     def create_virkey(self):
-        
+
         def clicked_on_key(char):
             self.keyboard.press(char)
             self.keyboard.release(char)
-        
+
         def create_key(
-            char,
-            row,
-            column,
-            columnspan=1,
-            special_cmd=None,
-            text=None,
-            icon=None,
-            ):
+                char,
+                row,
+                column,
+                columnspan=1,
+                special_cmd=None,
+                text=None,
+                icon=None,
+        ):
             if not icon:
                 if not text:
                     text = char
@@ -600,11 +601,11 @@ class Main:
                 style='K.TButton',
                 cursor='hand2',
             )
-            
+
             if not special_cmd:
-                key['command']=lambda char=char: clicked_on_key(char)
+                key['command'] = lambda char=char: clicked_on_key(char)
             else:
-                key['command']=special_cmd
+                key['command'] = special_cmd
 
             if icon:
                 key['image'] = icon
@@ -612,7 +613,7 @@ class Main:
                 key['text'] = text
 
             self.virkeyboard_keys.append(key)
-            self.virkeyboard_keys[len(self.virkeyboard_keys)-1].grid(
+            self.virkeyboard_keys[len(self.virkeyboard_keys) - 1].grid(
                 row=row,
                 column=column,
                 columnspan=columnspan,
@@ -621,29 +622,28 @@ class Main:
                 pady=2,
                 ipadx=0,
                 ipady=5,
-                )
-        
+            )
+
         def create_keys(row, column, chars):
             for char in chars:
                 create_key(char, row=row, column=column)
                 column += 1
-        
+
         def set_normal_chars():
             def caps_lock():
                 def up(widget):
                     char = widget['text']
                     new_char = widget['text'].upper()
                     widget['text'] = new_char
-                    widget['command'] = lambda char=new_char:clicked_on_key(char)
+                    widget['command'] = lambda char=new_char: clicked_on_key(char)
                     self.keys_state = True
 
                 def lo(widget):
                     char = widget['text']
                     new_char = widget['text'].lower()
                     widget['text'] = new_char
-                    widget['command'] = lambda char=new_char:clicked_on_key(char)
+                    widget['command'] = lambda char=new_char: clicked_on_key(char)
                     self.keys_state = False
-                    
 
                 if self.keys_state == False:
                     for key in self.virkeyboard_keys[15:25]:
@@ -670,7 +670,7 @@ class Main:
                     if not new_char:
                         new_char = widget['text'].upper()
                     widget['text'] = new_char
-                    widget['command'] = lambda char=new_char:clicked_on_key(char)
+                    widget['command'] = lambda char=new_char: clicked_on_key(char)
                     self.keys_state = True
 
                 def lo(widget):
@@ -682,20 +682,20 @@ class Main:
                     if not new_char:
                         new_char = widget['text'].lower()
                     widget['text'] = new_char
-                    widget['command'] = lambda char=new_char:clicked_on_key(char)
+                    widget['command'] = lambda char=new_char: clicked_on_key(char)
                     self.keys_state = False
 
                 special_chars = [
-                        ['`', '~'], ['1', '!'], ['2', '@'], ['3', '#'],
-                        ['4', '$'], ['5', '%'], ['6', '^'], ['7', '&'],
-                        ['8', '*'], ['9', '('], ['0', ')'], ['=', '+'],
-                        ['[', '{'], [']', '}'], [';', ':'], ["'", '"'],
-                        ['\\', '|'], [',', '<'], ['.', '>'], ['/', '?'],
-                        ['ز', 'ژ'], ['ا', 'آ'], ['‍۱', '!'], ['۲', '٬'],
-                        ['۳', '٫'], ['۴', '﷼'], ['۵', '٪'], ['۶', '×'],
-                        ['۷', '،'], ['۸', '*'], ['۹', ')'], ['۰', '('],
-                   
-                        ]
+                    ['`', '~'], ['1', '!'], ['2', '@'], ['3', '#'],
+                    ['4', '$'], ['5', '%'], ['6', '^'], ['7', '&'],
+                    ['8', '*'], ['9', '('], ['0', ')'], ['=', '+'],
+                    ['[', '{'], [']', '}'], [';', ':'], ["'", '"'],
+                    ['\\', '|'], [',', '<'], ['.', '>'], ['/', '?'],
+                    ['ز', 'ژ'], ['ا', 'آ'], ['‍۱', '!'], ['۲', '٬'],
+                    ['۳', '٫'], ['۴', '﷼'], ['۵', '٪'], ['۶', '×'],
+                    ['۷', '،'], ['۸', '*'], ['۹', ')'], ['۰', '('],
+
+                ]
                 if self.virkey_active_layout == 'fa':
                     special_chars.append(['-', 'ـ'])
                 else:
@@ -722,16 +722,16 @@ class Main:
 
             self.virkey_cnt_type = 'normal'
             self.keys_state = False
-            
+
             for child in board.winfo_children():
                 child.destroy()
             self.virkeyboard_keys = []
-            
+
             if self.root.winfo_screenwidth() > 720:
                 if self.virkey_active_layout == 'us':
                     self.virkey_lay = 'us'
                     create_keys(
-                    0, 0, ('`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=')
+                        0, 0, ('`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=')
                     )
                     create_key(
                         Key.backspace,
@@ -739,21 +739,21 @@ class Main:
                         column=13,
                         text='Backspace',
                         columnspan=2
-                        )
-                    
+                    )
+
                     create_key(Key.tab, row=1, column=0, text='Tab')
                     create_keys(
                         1, 1, ('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']')
-                        )
-                    
+                    )
+
                     create_key(
                         Key.enter,
                         row=1,
                         column=13,
                         text='Enter',
                         columnspan=2
-                        )
-                    
+                    )
+
                     create_key(
                         Key.caps_lock,
                         row=2,
@@ -761,12 +761,11 @@ class Main:
                         text='Caps Lock',
                         columnspan=2,
                         special_cmd=caps_lock,
-                        )
+                    )
                     create_keys(
                         2, 2, ('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", '\\')
-                        )
-                    
-                    
+                    )
+
                     create_key(
                         Key.shift_l,
                         row=3,
@@ -774,10 +773,10 @@ class Main:
                         text='Shift',
                         special_cmd=upper_or_lower,
                         columnspan=2
-                        )
+                    )
                     create_keys(
                         3, 2, ('z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/')
-                        )
+                    )
                     create_key(
                         Key.shift_r,
                         row=3,
@@ -785,33 +784,33 @@ class Main:
                         text='Shift',
                         special_cmd=upper_or_lower,
                         columnspan=2,
-                        )
+                    )
 
                 elif self.virkey_active_layout == 'ir':
                     self.virkey_lay = 'ir'
 
                     create_keys(
                         0, 0, ('‍‍‍‍‍‍‍‍÷', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰', '-', '=')
-                        )
+                    )
                     create_key(
                         Key.backspace,
                         row=0,
                         column=13,
                         text='Backspace',
                         columnspan=2,
-                        )
+                    )
 
                     create_key(Key.tab, row=1, column=0, text='Tab')
                     create_keys(
-                        1 , 1, ('ض', 'ص', 'ث', 'ق', 'ف', 'غ', 'ع', 'ه', 'خ', 'ح', 'ج', 'چ')
-                        )
+                        1, 1, ('ض', 'ص', 'ث', 'ق', 'ف', 'غ', 'ع', 'ه', 'خ', 'ح', 'ج', 'چ')
+                    )
                     create_key(
                         Key.enter,
                         row=1,
                         column=13,
                         text='Enter',
                         columnspan=2
-                        )
+                    )
 
                     create_key(
                         Key.caps_lock,
@@ -820,11 +819,11 @@ class Main:
                         text='Caps Lock',
                         columnspan=2,
                         special_cmd=caps_lock,
-                        )
+                    )
                     create_keys(
-                        2, 2, ('ش', 'س', 'ی', 'ب', 'ل', 'ا',  'ت', 'ن', 'م', 'ک', 'گ', '\\')
-                        )
-                    
+                        2, 2, ('ش', 'س', 'ی', 'ب', 'ل', 'ا', 'ت', 'ن', 'م', 'ک', 'گ', '\\')
+                    )
+
                     create_key(
                         Key.shift_l,
                         row=3,
@@ -832,10 +831,10 @@ class Main:
                         text='Shift',
                         special_cmd=upper_or_lower,
                         columnspan=2
-                        )
+                    )
                     create_keys(
                         3, 2, ('ظ', 'ط', 'ز', 'ر', 'ذ', 'د', 'پ', 'و', '.', '/')
-                        )
+                    )
                     create_key(
                         Key.shift_r,
                         row=3,
@@ -843,26 +842,26 @@ class Main:
                         text='Shift',
                         special_cmd=upper_or_lower,
                         columnspan=2,
-                        )
+                    )
 
                 create_key(
                     Key.ctrl_l,
                     row=4,
                     column=0,
                     text='Ctrl',
-                    )
+                )
                 create_key(
                     Key.cmd_l,
                     row=4,
                     column=1,
                     text='cmd',
-                    )
+                )
                 create_key(
                     Key.alt_r,
                     row=4,
                     column=2,
                     text='Alt',
-                    )
+                )
                 lang_icon = self.create_icon('cs-language', (24, 24))
                 create_key(
                     'lang',
@@ -870,14 +869,14 @@ class Main:
                     column=3,
                     special_cmd=set_keyboard_layout,
                     icon=lang_icon,
-                    )
+                )
                 create_key(
                     Key.space,
                     row=4,
                     column=4,
                     text=' ',
                     columnspan=6
-                    )
+                )
                 keyboard_icon = self.create_icon('keyboard', (24, 24), shell=True)
                 create_key(
                     'hide',
@@ -885,38 +884,38 @@ class Main:
                     column=10,
                     special_cmd=self.show_hide_virkey,
                     icon=keyboard_icon,
-                    )
+                )
                 create_key(
                     Key.alt_r,
                     row=4,
                     column=11,
                     text='Alt',
-                    )
+                )
                 create_key(
                     Key.cmd_r,
                     row=4,
                     column=12,
                     text='cmd',
-                    )
+                )
                 create_key(
                     Key.ctrl_r,
                     row=4,
                     column=13,
                     text='Ctrl',
-                    )
-                
+                )
+
                 create_key(
                     Key.insert,
                     row=0,
                     column=15,
                     text='Insert',
-                    )
+                )
                 create_key(Key.delete, row=1, column=15, text='Delete')
                 create_key(Key.home, row=0, column=16, text='Home')
                 create_key(Key.end, row=1, column=16, text='End')
                 create_key(Key.page_up, row=0, column=17, text='Page Up')
                 create_key(Key.page_down, row=1, column=17, text='Page Down')
-                
+
                 create_key(Key.up, row=3, column=16, text='Up')
                 create_key(Key.left, row=4, column=15, text='Left')
                 create_key(Key.down, row=4, column=16, text='Down')
@@ -927,60 +926,60 @@ class Main:
                     self.virkey_lay = 'us'
                     create_keys(
                         0, 0, ('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p')
-                        )
+                    )
                     create_key(Key.delete, row=0, column=10, text='Delete')
-                    
+
                     create_keys(
                         1, 0, ('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l')
-                        )
+                    )
                     create_key(
                         Key.enter,
                         row=1,
                         column=9,
                         text='Enter',
                         columnspan=2
-                        )
-                    
+                    )
+
                     create_key(
                         Key.shift_l,
                         row=2,
                         column=0,
                         text='Shift',
                         special_cmd=upper_or_lower
-                        )
+                    )
                     create_keys(
                         2, 1, ('z', 'x', 'c', 'v', 'b', 'n', 'm', '@', '.')
-                        )
+                    )
                     create_key(
                         Key.shift_l,
                         row=2,
                         column=10,
                         text='Shift',
                         special_cmd=upper_or_lower
-                        )
+                    )
 
                     create_keys(3, 8, ('_', '/'))
-                    
+
                 elif self.virkey_active_layout == 'ir':
                     self.virkey_lay = 'ir'
                     create_keys(
                         0, 0, ('ض', 'ص', 'ث', 'ق', 'ف', 'غ', 'ع', 'ه', 'خ', 'ح', 'ج', 'چ')
-                        )
+                    )
 
                     create_keys(
                         1, 0, ('ش', 'س', 'ی', 'ب', 'ل', 'ا', 'آ', 'ت', 'ن', 'م', 'ک', 'گ')
-                        )
+                    )
 
                     create_keys(
                         2, 0, ('ظ', 'ط', 'ژ', 'ز', 'ر', 'ذ', 'د', 'پ', 'و', '.')
-                        )
+                    )
                     create_key(
                         Key.enter,
                         row=2,
                         column=10,
                         text='Enter',
                         columnspan=2
-                        )
+                    )
 
                     create_keys(3, 8, ('ـ', '/'))
                     create_key(
@@ -988,7 +987,7 @@ class Main:
                         row=3,
                         column=11,
                         text=self.setrtl('حذف')
-                        )
+                    )
 
                 create_key(
                     '&123',
@@ -996,7 +995,7 @@ class Main:
                     column=0,
                     columnspan=2,
                     special_cmd=show_hide_special_chars
-                    )
+                )
                 lang_icon = self.create_icon('cs-language', (24, 24))
                 create_key(
                     'lang',
@@ -1004,14 +1003,14 @@ class Main:
                     column=2,
                     special_cmd=set_keyboard_layout,
                     icon=lang_icon,
-                    )
+                )
                 create_key(
                     Key.space,
                     row=3,
                     column=3,
                     text=' ',
                     columnspan=5
-                    )
+                )
                 keyboard_icon = self.create_icon('keyboard', (24, 24), shell=True)
                 create_key(
                     'hide',
@@ -1019,7 +1018,7 @@ class Main:
                     column=10,
                     special_cmd=self.show_hide_virkey,
                     icon=keyboard_icon,
-                    )
+                )
 
         def set_special_chars():
             self.virkey_cnt_type = 'special'
@@ -1030,23 +1029,23 @@ class Main:
 
             create_keys(
                 0, 0, ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
-                )
+            )
             create_key(Key.delete, row=0, column=10, text='Delete')
 
             create_keys(1, 0, ('`', '|', '{', '}', '%', '^', '*', '/', '"'))
             create_key(Key.enter, row=1, column=9, text='Enter', columnspan=2)
-            
+
             create_keys(
                 2, 0, ('$', '&', '~', '#', '=', '+', '@', '?', '!', '_', '-')
             )
-            
+
             create_key(
                 '&123',
                 row=3,
                 column=0,
                 columnspan=2,
                 special_cmd=show_hide_special_chars
-                )
+            )
             lang_icon = self.create_icon('cs-language', (24, 24))
             create_key(
                 'lang',
@@ -1054,28 +1053,28 @@ class Main:
                 column=2,
                 special_cmd=set_keyboard_layout,
                 icon=lang_icon,
-                )
+            )
             create_key(
                 Key.space,
                 row=3,
                 column=3,
                 text=' ',
                 columnspan=4
-                )
+            )
             create_keys(3, 7, ('<', '>', '(', ')'))
-        
+
         def show_hide_special_chars():
             if self.virkey_cnt_type != 'special':
                 set_special_chars()
             else:
                 set_normal_chars()
-        
+
         def reset_chars():
             if self.virkey_cnt_type == 'special':
                 set_special_chars()
             else:
                 set_normal_chars()
-        
+
         def animation_show(x=0):
             screen_width = self.root.winfo_screenwidth()
             self.virkey.geometry(
@@ -1083,16 +1082,16 @@ class Main:
                     width=screen_width,
                     height=280,
                     direction=local_direction,
-                    xoffset=-screen_width+x,
+                    xoffset=-screen_width + x,
                     yoffset=self.height_root_window,
-                    )
                 )
+            )
             if x < screen_width:
                 if screen_width - x < 20:
                     self.virkey.after(5, animation_show, (screen_width))
                 else:
-                    self.virkey.after(5, animation_show, (x+20))
-        
+                    self.virkey.after(5, animation_show, (x + 20))
+
         def set_keyboard_layout():
             layouts = self.get_keyboard_layouts()
             index = 0
@@ -1100,10 +1099,10 @@ class Main:
                 if layout == self.virkey_active_layout:
                     break
                 index += 1
-            if index+1 == len(layouts):
+            if index + 1 == len(layouts):
                 self.virkey_active_layout = layouts[0]
             else:
-                self.virkey_active_layout = layouts[index+1]
+                self.virkey_active_layout = layouts[index + 1]
             set_normal_chars()
 
         self.virkey = tk.Toplevel()
@@ -1120,8 +1119,8 @@ class Main:
                 direction=local_direction,
                 xoffset=-self.root.winfo_screenwidth(),
                 yoffset=self.height_root_window,
-                )
             )
+        )
         self.virkey.wm_attributes('-type', 'dock')
         self.virkey.wm_attributes('-alpha', '0.8')
         self.virkey.configure(background="#333")
@@ -1129,14 +1128,14 @@ class Main:
         # board
         board = ttk.Frame(self.virkey, style="A.TFrame")
         board.pack(pady=15)
-        
+
         self.virkey_cnt_type = ''
-        
+
         self.virkeyboard_keys = []
         self.virkey_active_layout = self.keyboard_active_layout
-        
+
         set_normal_chars()
-        
+
         animation_show()
 
     def show_hide_virkey(self):
@@ -1146,7 +1145,7 @@ class Main:
         except AttributeError:
             self.hide_all_wins()
             self.create_virkey()
-    
+
     def animation_hide_virkey(self, x=0):
         if self.geometry_direction == '-':
             local_direction = '+'
@@ -1161,13 +1160,13 @@ class Main:
                     direction=local_direction,
                     xoffset=-x,
                     yoffset=self.height_root_window,
-                    )
                 )
+            )
             if x < screen_width:
                 if screen_width - x < 20:
                     self.virkey.after(5, self.animation_hide_virkey, (screen_width))
                 else:
-                    self.virkey.after(5, self.animation_hide_virkey, (x+20))
+                    self.virkey.after(5, self.animation_hide_virkey, (x + 20))
             else:
                 self.virkey.destroy()
                 del self.virkey
@@ -1177,7 +1176,8 @@ class Main:
     def on_move_recorder(self, x, y):
         self.mouse_pos_x = x
         self.mouse_pos_y = y
-        # --new-option: hover bootom, left or right show awin
+
+    # --new-option: hover bootom, left or right show awin
 
     def on_click_recorder(self, x, y, button, pressed):
         if pressed:
@@ -1187,21 +1187,21 @@ class Main:
 
     def mouse_click_checker(self):
         with self.MouseListener(
-            on_click=self.on_click_recorder,
-            on_move=self.on_move_recorder) as self.MouseListener:
+                on_click=self.on_click_recorder,
+                on_move=self.on_move_recorder) as self.MouseListener:
             self.MouseListener.join()
-    
+
     def on_press_key_recorder(self, key):
         # --new-option: press cmd button create awin
         self.pressed_key = key
-    
+
     def on_release_key_recorder(self, key):
         self.released_key = key
 
     def keyboard_click_checker(self):
         with self.KeyboardListener(
-            on_press=self.on_press_key_recorder,
-            on_release=self.on_release_key_recorder) as self.KeyboardListener:
+                on_press=self.on_press_key_recorder,
+                on_release=self.on_release_key_recorder) as self.KeyboardListener:
             self.KeyboardListener.join()
 
     def animation_hide_swin(self, new_width=0):
@@ -1216,14 +1216,14 @@ class Main:
         self.swin.geometry(
             '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                 width=640,
-                height=self.root.winfo_screenheight()-self.height_root_window,
+                height=self.root.winfo_screenheight() - self.height_root_window,
                 direction=local_direction,
                 xoffset=-new_width,
                 yoffset=self.height_root_window,
-                )
             )
+        )
         if new_width < 640:
-            self.swin.after(5, self.animation_hide_swin, new_width+20)
+            self.swin.after(5, self.animation_hide_swin, new_width + 20)
         else:
             self.swin.destroy()
             del self.swin
@@ -1268,11 +1268,11 @@ class Main:
                     command=lambda si=stack_index: clicked_stack_switche(si),
                     style='AS.TButton',
                     cursor='hand2',
-                    )
+                )
                 if icon:
                     switche['image'] = icon
                 else:
-                    switche['text'] = self.translate_word(str(stack_index+1))
+                    switche['text'] = self.translate_word(str(stack_index + 1))
                 switche.pack(side=tk.LEFT, pady=5, padx=5)
                 stack_switches_list.append(switche)
 
@@ -1286,8 +1286,8 @@ class Main:
             add_stack()
 
             row, column = 0, 0
-            max_row = (self.root.winfo_screenheight()- \
-            self.height_root_window) // 120
+            max_row = (self.root.winfo_screenheight() - \
+                       self.height_root_window) // 120
             stack_index = 0
 
             for app in apps:
@@ -1309,13 +1309,13 @@ class Main:
                     compound=tk.TOP,
                     style='A.TButton',
                     cursor='hand2'
-                    )
+                )
 
                 icon = self.create_icon(app['icon_name'], (48, 48))
                 if icon != '':
-                        button['image'] = icon
+                    button['image'] = icon
 
-                button.grid(row=row, column=column, pady=12, padx=8)   # ~max 15, 15
+                button.grid(row=row, column=column, pady=12, padx=8)  # ~max 15, 15
 
                 if column == 2:
                     column = 0
@@ -1348,15 +1348,15 @@ class Main:
                 '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                     width=640,
                     height=(
-                        self.root.winfo_screenheight()-self.height_root_window
+                            self.root.winfo_screenheight() - self.height_root_window
                     ),
                     direction=local_direction,
-                    xoffset=-(640-new_width),
+                    xoffset=-(640 - new_width),
                     yoffset=self.height_root_window,
-                    )
                 )
+            )
             if new_width < 640:
-                self.swin.after(5, animation_show_swin, new_width+20)
+                self.swin.after(5, animation_show_swin, new_width + 20)
 
         if self.geometry_direction == '-':
             local_direction = '+'
@@ -1366,12 +1366,12 @@ class Main:
         self.swin.geometry(
             '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                 width=640,
-                height=self.root.winfo_screenheight()-self.height_root_window,
+                height=self.root.winfo_screenheight() - self.height_root_window,
                 direction=local_direction,
                 xoffset=0,
                 yoffset=self.height_root_window,
-                )
             )
+        )
         self.swin.wm_attributes('-type', 'dock')
         self.swin.wm_attributes('-alpha', '0.9')
         self.swin.configure(background="#333")
@@ -1412,12 +1412,12 @@ class Main:
             self.system_power.geometry(
                 '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                     width=320,
-                    height=245, # 255 - 10
+                    height=245,  # 255 - 10
                     direction=local_direction,
                     xoffset=0,
-                    yoffset=self.height_root_window+65+10,
-                    )
+                    yoffset=self.height_root_window + 65 + 10,
                 )
+            )
             self.system_power.wm_attributes('-type', 'dock')
             self.system_power.configure(background="#333")
 
@@ -1431,8 +1431,8 @@ class Main:
                 command=self.shutdown,
                 compound=self.START,
                 text=self.translate_word('Shutdown'),
-                )
-            shutdownb.pack(ipady=10,)
+            )
+            shutdownb.pack(ipady=10, )
 
             rebootb = ttk.Button(
                 body,
@@ -1440,11 +1440,11 @@ class Main:
                 command=self.reboot,
                 compound=self.START,
                 text=self.translate_word('Restart'),
-                )
+            )
             reboot_icon = self.create_icon('system-restart', (24, 24), shell=True)
             if reboot_icon:
                 rebootb['image'] = reboot_icon
-            rebootb.pack(ipady=10,)
+            rebootb.pack(ipady=10, )
 
             logoutb = ttk.Button(
                 body,
@@ -1452,11 +1452,11 @@ class Main:
                 command=self.logout,
                 compound=self.START,
                 text=self.translate_word('Log Out'),
-                )
+            )
             logout_icon = self.create_icon('system-log-out', (24, 24), shell=True)
             if logout_icon:
                 logoutb['image'] = logout_icon
-            logoutb.pack(ipady=10,)
+            logoutb.pack(ipady=10, )
 
         def show_hide_system_power():
             try:
@@ -1471,24 +1471,24 @@ class Main:
                     width=320,
                     height=320,
                     direction=local_direction,
-                    xoffset=-(320-new_width),
+                    xoffset=-(320 - new_width),
                     yoffset=self.height_root_window,
-                    )
                 )
+            )
             if new_width < 320:
-                self.smwin.after(5, animation_show_smwin, new_width+20)
+                self.smwin.after(5, animation_show_smwin, new_width + 20)
 
         def check_mouse():
             x, y = self.click_pos_x, self.click_pos_y
-            if  self.new_click:
+            if self.new_click:
                 try:
                     self.swin
                     self.animation_hide_smwin()
                 except AttributeError:
                     if y < self.root.winfo_screenheight() - \
-                            320-self.height_root_window:
+                            320 - self.height_root_window:
                         self.animation_hide_smwin()
-                    elif y > self.root.winfo_screenheight()\
+                    elif y > self.root.winfo_screenheight() \
                             - self.height_root_window:
                         self.animation_hide_smwin()
 
@@ -1509,7 +1509,7 @@ class Main:
                 style="SM.TButton",
                 command=command,
                 cursor='hand2',
-                )
+            )
 
             b_icon = self.create_icon(icon_name, (32, 32), shell=True)
 
@@ -1520,21 +1520,21 @@ class Main:
 
             b.grid(row=0, column=len(bottombar_buttons), padx=6, pady=6)
             bottombar_buttons.append(b)
-        
+
         def set_sound_volume(event):
             volume = event.x * 100 / 320
-            call(["amixer", "-D", "pulse", "sset", "Master", str(volume)+"%"])
+            call(["amixer", "-D", "pulse", "sset", "Master", str(volume) + "%"])
             x = self.sound_volume_ui.coords('sound_volume_l')[0]
             if x < 320 and x > 0:
-                self.sound_volume_ui.coords('sound_volume_l', event.x-16, 0)
+                self.sound_volume_ui.coords('sound_volume_l', event.x - 16, 0)
                 self.sound_volume_ui.coords(
                     'sound_volume_pb',
                     0,
                     13,
                     event.x,
                     19
-                    )
-        
+                )
+
         def get_sound_volume():
             c = "amixer -D pulse sget Master | awk 'FNR==6 { print $5 } FNR==7 { print $5 }'"
             pipe = Popen(c, shell=True, stdout=PIPE)
@@ -1542,18 +1542,18 @@ class Main:
             volumes = text.split('\n')
             if not volumes[-1]:
                 volumes = volumes[:-1]
-           # شاید بشه بیشتر از ۲ بلند گو باشه
+            # شاید بشه بیشتر از ۲ بلند گو باشه
             if volumes:
-                x = int(volumes[0][1:-2])*320/100
+                x = int(volumes[0][1:-2]) * 320 / 100
 
-                self.sound_volume_ui.coords('sound_volume_l', x-16, 0)
+                self.sound_volume_ui.coords('sound_volume_l', x - 16, 0)
                 self.sound_volume_ui.coords(
-                        'sound_volume_pb',
-                        0,
-                        13,
-                        x,
-                        19
-                        )
+                    'sound_volume_pb',
+                    0,
+                    13,
+                    x,
+                    19
+                )
             else:
                 x = 0
 
@@ -1563,16 +1563,16 @@ class Main:
                         'volume-off-label',
                         (32, 32),
                         shell=True
-                        )
+                    )
                     msf_sound_volume_icon = self.create_icon(
                         'volume-off',
                         (18, 18),
                         shell=True
-                        )
+                    )
                     self.sound_volume_ui.itemconfig(
                         'sound_volume_l',
                         image=sound_volume_icon
-                        )
+                    )
                     self.smf_sound_volume_l['image'] = msf_sound_volume_icon
                     self.sound_volume_off = True
             else:
@@ -1581,16 +1581,16 @@ class Main:
                         'volume-label',
                         (32, 32),
                         shell=True
-                        )
+                    )
                     msf_sound_volume_icon = self.create_icon(
                         'volume',
                         (18, 18),
                         shell=True
-                        )
+                    )
                     self.sound_volume_ui.itemconfig(
                         'sound_volume_l',
                         image=sound_volume_icon
-                        )
+                    )
                     self.smf_sound_volume_l['image'] = msf_sound_volume_icon
                     self.sound_volume_off = False
 
@@ -1605,8 +1605,8 @@ class Main:
                 direction=local_direction,
                 xoffset=-320,
                 yoffset=self.height_root_window,
-                )
             )
+        )
         self.smwin.wm_attributes('-type', 'dock')
         self.smwin.configure(background="#333")
 
@@ -1620,17 +1620,17 @@ class Main:
             height=32,
             background='#333',
             highlightbackground="#333"
-            )
+        )
         self.sound_volume_ui.pack(side=tk.TOP, pady=5)
-        
+
         self.sound_volume_ui.create_rectangle(
             0, 13, 320, 19, fill="#eee", tags="sound_volume_b"
-            )
+        )
 
         self.sound_volume_pb = self.sound_volume_ui.create_rectangle(
             0, 13, 200, 19, fill="#59f", tags="sound_volume_pb"
-            )
-        
+        )
+
         sound_volume_icon = self.create_icon('volume-label', (32, 32), shell=True)
         self.sound_volume_l = self.sound_volume_ui.create_image(
             0,
@@ -1638,30 +1638,30 @@ class Main:
             anchor=tk.NW,
             image=sound_volume_icon,
             tags="sound_volume_l"
-            )
+        )
 
         self.sound_volume_ui.tag_bind(
             'sound_volume_b',
             '<Button-1>',
             set_sound_volume
-            )
+        )
         self.sound_volume_ui.tag_bind(
             'sound_volume_b',
             '<B1-Motion>',
             set_sound_volume
-            )
+        )
         self.sound_volume_ui.tag_bind(
             'sound_volume_l',
             '<Button-1>',
             set_sound_volume
-            )
+        )
         self.sound_volume_ui.tag_bind(
             'sound_volume_l',
             '<B1-Motion>',
             set_sound_volume
-            )
+        )
         self.sound_volume_ui.pack(side=tk.LEFT)
-        
+
         self.sound_volume_off = False
         get_sound_volume()
 
@@ -1674,19 +1674,19 @@ class Main:
             show_hide_system_power,
             'system-shutdown',
             'Log Out',
-            )
+        )
 
         create_bottombar_button(
             self.show_hide_swin,
             'system-settings',
             'Settings',
-            )
+        )
 
         create_bottombar_button(
             self.lock,
             'system-lock',
             'Lock',
-            )
+        )
 
         animation_show_smwin()
 
@@ -1701,7 +1701,7 @@ class Main:
             self.smwin
         except AttributeError:
             return
-        
+
         if self.geometry_direction == '-':
             local_direction = '+'
         elif self.geometry_direction == '+':
@@ -1714,9 +1714,9 @@ class Main:
                 direction=local_direction,
                 xoffset=-new_width,
                 yoffset=self.height_root_window,
-                )
             )
-        
+        )
+
         try:
             self.system_power
             self.system_power.geometry(
@@ -1725,14 +1725,14 @@ class Main:
                     height=255,
                     direction=local_direction,
                     xoffset=-new_width,
-                    yoffset=self.height_root_window+65,
-                    )
+                    yoffset=self.height_root_window + 65,
                 )
+            )
         except AttributeError:
             pass
 
         if new_width < 320:
-            self.smwin.after(5, self.animation_hide_smwin, new_width+20)
+            self.smwin.after(5, self.animation_hide_smwin, new_width + 20)
         else:
             self.smwin.destroy()
             del self.smwin
@@ -1755,10 +1755,10 @@ class Main:
         self.root.geometry('{width}x{height}+0+{yoffset}'.format(
             width=self.root.winfo_screenwidth(),
             height=self.height_root_window,
-            yoffset=self.root.winfo_screenheight()-new_height
+            yoffset=self.root.winfo_screenheight() - new_height
         ))
         if new_height != self.height_root_window:
-            self.root.after(8, self.animation_show_root, new_height+1)
+            self.root.after(8, self.animation_show_root, new_height + 1)
         else:
             self.rootw_check_mouse()
 
@@ -1785,7 +1785,7 @@ class Main:
             if type_ and type_ != []:
                 app_proc = self.get_proc_with_pid(
                     self.ewmh.getWmPid(w)
-                    )
+                )
                 icon_name = self.get_icon_name_with_exec(app_proc)
             else:
                 icon_name = None
@@ -1800,7 +1800,7 @@ class Main:
                 style='W.TButton',
                 compound=tk.BOTTOM,
                 cursor='hand2',
-                )
+            )
             if icon:
                 button['image'] = icon
             else:
@@ -1815,30 +1815,30 @@ class Main:
         def create_window_buttons(wl):
             self.windows_button = []
 
-            win_width = len(wl)*139+139+30
-            win_xoffset = self.root.winfo_screenwidth()//2-win_width//2
+            win_width = len(wl) * 139 + 139 + 30
+            win_xoffset = self.root.winfo_screenwidth() // 2 - win_width // 2
             self.wwl.geometry('{width}x{height}+{xoffset}-{yoffset}'.format(
                 width=win_width,
                 height=139,
                 direction=self.geometry_direction,
                 xoffset=win_xoffset,
                 yoffset=(
-                    self.root.winfo_screenheight()-self.height_root_window
-                )//2-38
+                                self.root.winfo_screenheight() - self.height_root_window
+                        ) // 2 - 38
             ))
 
             show_desktopb = ttk.Button(
                 self.fwl,
-                command= lambda wl=wl:self.show_desktop(wl),
+                command=lambda wl=wl: self.show_desktop(wl),
                 style='W.TButton',
                 compound=tk.BOTTOM,
                 cursor='hand2',
-                )
+            )
             show_desktop_icon = self.create_icon('show-desktop', (128, 128))
             if show_desktop_icon:
                 show_desktopb['image'] = show_desktop_icon
             else:
-                    show_desktopb['text'] = self.translate_word('wallpaper')
+                show_desktopb['text'] = self.translate_word('wallpaper')
             self.windows_button.append(show_desktopb)
             if self.geometry_direction == '+':
                 show_desktopb.pack(side=self.START, padx=(0, 30))
@@ -1851,20 +1851,20 @@ class Main:
         def check_mouse():
             x, y = self.click_pos_x, self.click_pos_x
             if self.new_click:
-                win_width = len(wl)*139+139+30
+                win_width = len(wl) * 139 + 139 + 30
                 win_xoffset = (
-                    self.root.winfo_screenwidth()//2-win_width//2
-                    )
+                        self.root.winfo_screenwidth() // 2 - win_width // 2
+                )
                 if y < (
-                    self.root.winfo_screenheight()-self.height_root_window
-                        )//2-38:
+                        self.root.winfo_screenheight() - self.height_root_window
+                ) // 2 - 38:
                     self.animation_hide_windows_list()
                 elif y > (
-                    self.root.winfo_screenheight()-self.height_root_window
-                        )//2-38 + 139:
+                        self.root.winfo_screenheight() - self.height_root_window
+                ) // 2 - 38 + 139:
                     self.animation_hide_windows_list()
 
-                elif x > win_width+win_xoffset:
+                elif x > win_width + win_xoffset:
                     self.animation_hide_windows_list()
                 elif x < win_xoffset:
                     self.animation_hide_windows_list()
@@ -1872,34 +1872,34 @@ class Main:
                 self.wwl.after(400, check_mouse)
             except AttributeError:
                 return
-        
+
         def animation_show(y=0):
-            width = len(wl)*139+139+30
+            width = len(wl) * 139 + 139 + 30
             self.wwl.geometry('{width}x{height}{direction}{x}+{y}'.format(
                 width=width,
                 height=139,
                 direction=self.geometry_direction,
                 x=(self.root.winfo_screenwidth() - width) // 2,
-                y=-140+y  # 140 ~ 39
-                )
+                y=-140 + y  # 140 ~ 39
             )
-            if y < (self.root.winfo_screenheight()- \
-                    self.height_root_window)//2+40:  # 40 ~ 39
-                self.wwl.after(10, animation_show, (y+20))
+            )
+            if y < (self.root.winfo_screenheight() - \
+                    self.height_root_window) // 2 + 40:  # 40 ~ 39
+                self.wwl.after(10, animation_show, (y + 20))
 
         del self.ewmh
         self.ewmh = EWMH()
         wl = get_wl()
         if len(wl) != 0:
             self.wwl = tk.Toplevel()
-            width = len(wl)*139+139+30
+            width = len(wl) * 139 + 139 + 30
             self.wwl.geometry('{width}x{height}{direction}{x}+{y}'.format(
                 width=width,
                 height=139,
                 direction=self.geometry_direction,
                 x=(self.root.winfo_screenwidth() - width) // 2,
                 y=-140  # 140 ~ 39
-                )
+            )
             )
             self.wwl.wm_attributes('-type', 'dock')
             self.wwl.configure(background="#222")
@@ -1923,7 +1923,7 @@ class Main:
                 direction=self.geometry_direction,
                 x=(self.root.winfo_screenwidth() - width) // 2,
                 y=self.wwl.winfo_y() - 20
-                )
+            )
             )
 
             if self.wwl.winfo_y() > -self.wwl.winfo_height():
@@ -1994,7 +1994,7 @@ class Main:
         led_mask = pipe.communicate()[0].decode('utf-8')
         if led_mask[-1] == '\n':
             led_mask = led_mask[:-1]
-        
+
         if led_mask in self.keyboard_layouts_code:
             layout = self.keyboard_layouts_code[led_mask]
             if layout != self.keyboard_active_layout:
@@ -2023,7 +2023,7 @@ class Main:
                 show = False
             elif file_.find('org.gnome') != -1:
                 index = file_.find('org.gnome')
-                file_ = file_[:index] + file_[index+10:]
+                file_ = file_[:index] + file_[index + 10:]
                 if file_ in files:
                     show = False
                 elif file_.lower() in files:
@@ -2031,7 +2031,7 @@ class Main:
             elif os.path.isdir(file_):
                 show = False
             return show
-        
+
         def find_deskfiles(root_dir):
             sub_deskfiles = []
             if os.path.exists(root_dir):
@@ -2046,20 +2046,20 @@ class Main:
                                             str_[:9] != 'Uninstall' and \
                                             str_ != 'Online Documentation.desktop':
                                         if sub_dirs[0][-1] == '/':
-                                            sub_deskfiles.append(sub_dirs[0]+str_)
+                                            sub_deskfiles.append(sub_dirs[0] + str_)
                                         else:
-                                            sub_deskfiles.append(sub_dirs[0]+'/'+str_)
+                                            sub_deskfiles.append(sub_dirs[0] + '/' + str_)
             return sub_deskfiles
 
         files = []
-        
+
         local_dir = '{}/.local/share/applications/'.format(os.path.expanduser('~'))
         if os.path.exists(local_dir):
             local_files = find_deskfiles(local_dir)
 
             for fil in local_files:
                 files.append(fil)
-                
+
         if os.path.exists('/var/lib/snapd/desktop/applications/'):
             snap_files = find_deskfiles('/var/lib/snapd/desktop/applications/')
 
@@ -2073,7 +2073,7 @@ class Main:
             if fil not in files:
                 files.append(fil)
         deskfiles = []
-        
+
         # check for return back self.apps variable
 
         for file_ in files:
@@ -2096,16 +2096,16 @@ class Main:
                         exec_ = 'gnome-terminal -- ' + exec_
 
                     deskfiles.append({
-                            'name': self.get_value(text, 'Name'),
-                            'file_name': file_,
-                            'command': exec_,
-                            'icon_name': icon_name,
-                            'categories': categories,
-                            })
+                        'name': self.get_value(text, 'Name'),
+                        'file_name': file_,
+                        'command': exec_,
+                        'icon_name': icon_name,
+                        'categories': categories,
+                    })
         return deskfiles
 
     def get_deskfile(self, app_name):
-        file_ = '/usr/share/applications/'+app_name
+        file_ = '/usr/share/applications/' + app_name
         deskfile = {}
 
         if file_[-8:] == '.desktop':
@@ -2120,22 +2120,22 @@ class Main:
                 categories = self.get_value(text, 'Categories').split(';')
 
                 if self.get_value(text, 'Terminal') == 'true':
-                    exec_ = 'konsole -e '+self.get_value(text, 'Exec')
+                    exec_ = 'konsole -e ' + self.get_value(text, 'Exec')
                 else:
                     exec_ = self.get_value(text, 'Exec')
 
                 deskfile = {
-                        'name': self.get_value(text, 'Name'),
-                        'file_name': file_,
-                        'command': exec_,
-                        'icon': icon,
-                        'icon_name': icon_name,
-                        'categories': categories,
-                        }
+                    'name': self.get_value(text, 'Name'),
+                    'file_name': file_,
+                    'command': exec_,
+                    'icon': icon,
+                    'icon_name': icon_name,
+                    'categories': categories,
+                }
         return deskfile
 
     def run(self, command):
-        _thread.start_new_thread(os.system, (command+' &',))
+        _thread.start_new_thread(os.system, (command + ' &',))
 
     def tick(self):
         self.time1
@@ -2177,11 +2177,11 @@ class Main:
                     command=lambda si=stack_index: clicked_stack_switche(si),
                     style='AS.TButton',
                     cursor='hand2',
-                    )
+                )
                 if icon:
                     switche['image'] = icon
                 else:
-                    switche['text'] = self.translate_word(str(stack_index+1))
+                    switche['text'] = self.translate_word(str(stack_index + 1))
                 switche.pack(side=tk.LEFT, pady=5, padx=5)
                 stack_switches_list.append(switche)
 
@@ -2195,8 +2195,8 @@ class Main:
             add_stack()
 
             row, column = 0, 0
-            max_row = (self.root.winfo_screenheight()- \
-            self.height_root_window) // 120
+            max_row = (self.root.winfo_screenheight() - \
+                       self.height_root_window) // 120
 
             stack_index = 0
 
@@ -2219,13 +2219,13 @@ class Main:
                     compound=tk.TOP,
                     style='A.TButton',
                     cursor='hand2'
-                    )
+                )
 
                 icon = self.create_icon(app['icon_name'], (48, 48))
                 if icon != '':
                     button['image'] = icon
 
-                button.grid(row=row, column=column, pady=12, padx=8)   # ~max 15, 15
+                button.grid(row=row, column=column, pady=12, padx=8)  # ~max 15, 15
 
                 if column == 2:
                     column = 0
@@ -2237,11 +2237,11 @@ class Main:
 
         def check_mouse():
             x, y = self.click_pos_x, self.click_pos_y
-            
+
             if self.new_click:
                 if y > (
-                    self.root.winfo_screenheight()-self.height_root_window
-                        ):
+                        self.root.winfo_screenheight() - self.height_root_window
+                ):
                     self.animation_hide_awin()
 
                 elif self.geometry_direction == '+':
@@ -2261,26 +2261,26 @@ class Main:
                 '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                     width=640,
                     height=(
-                        self.root.winfo_screenheight()-self.height_root_window
+                            self.root.winfo_screenheight() - self.height_root_window
                     ),
                     direction=self.geometry_direction,
-                    xoffset=-(640-new_width),
+                    xoffset=-(640 - new_width),
                     yoffset=self.height_root_window,
-                    )
                 )
+            )
             if new_width < 640:
-                self.awin.after(5, animation_show_awin, new_width+20)
+                self.awin.after(5, animation_show_awin, new_width + 20)
 
         self.awin = tk.Toplevel()
         self.awin.geometry(
             '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                 width=640,
-                height=self.root.winfo_screenheight()-self.height_root_window,
+                height=self.root.winfo_screenheight() - self.height_root_window,
                 direction=self.geometry_direction,
                 xoffset=-640,
                 yoffset=self.height_root_window,
-                )
             )
+        )
         self.awin.wm_attributes('-type', 'dock')
         self.awin.wm_attributes('-alpha', '0.9')
         self.awin.configure(background="#333")
@@ -2299,10 +2299,10 @@ class Main:
 
         histories_dir = '{}/.config/navar/histories/'.format(
             os.path.expanduser('~')
-            )
+        )
 
         try:
-            file = open(histories_dir+'apps-use.txt', 'r')
+            file = open(histories_dir + 'apps-use.txt', 'r')
             text = file.read()
             file.close()
         except FileNotFoundError:
@@ -2310,11 +2310,11 @@ class Main:
 
         if text:
             apps_num = {}
-            
+
             items = text.split('\n')
             if not items[-1]:
                 items = items[:-1]
-            
+
             apps_num = {}
             values = []
             for item in items:
@@ -2323,7 +2323,7 @@ class Main:
                     value = int(item[-1])
                 except:
                     value = 0
-                    file = open(histories_dir+'apps-use.txt', 'w')
+                    file = open(histories_dir + 'apps-use.txt', 'w')
                     file.close()
                 apps_num[item[0]] = value
                 if value not in values:
@@ -2349,11 +2349,11 @@ class Main:
             show_apps(apps_list)
         else:
             show_apps(apps)
-        
+
         animation_show_awin()
 
         fapps.pack(fill=tk.BOTH, expand=1)
-        
+
         self.new_click = False
         check_mouse()
 
@@ -2363,15 +2363,15 @@ class Main:
                 '{width}x{height}{direction}{xoffset}-{yoffset}'.format(
                     width=640,
                     height=(
-                        self.root.winfo_screenheight()-self.height_root_window
-                        ),
+                            self.root.winfo_screenheight() - self.height_root_window
+                    ),
                     direction=self.geometry_direction,
                     xoffset=new_width,
                     yoffset=self.height_root_window,
-                    )
                 )
+            )
             if new_width > -640:
-                self.awin.after(5, self.animation_hide_awin, new_width-20)
+                self.awin.after(5, self.animation_hide_awin, new_width - 20)
             else:
                 self.awin.destroy()
                 del self.awin
@@ -2420,19 +2420,19 @@ class Main:
         self.animation_hide_awin()
         self.run(command)
         self.set_app_history(command)
-        
+
     def set_app_history(self, command):
         dir_ = '{}/.config/navar/histories/'.format(
             os.path.expanduser('~')
-            )
+        )
         if not os.path.exists(dir_):
             os.system('mkdir -p {}'.format(dir_))
 
-        if not os.path.exists(dir_+'apps-use.txt'):
-            file = open(dir_+'apps-use.txt', 'w')
+        if not os.path.exists(dir_ + 'apps-use.txt'):
+            file = open(dir_ + 'apps-use.txt', 'w')
             file.close()
-        
-        file = open(dir_+'apps-use.txt', 'r')
+
+        file = open(dir_ + 'apps-use.txt', 'r')
         text = file.read()
         file.close()
 
@@ -2441,7 +2441,7 @@ class Main:
             items_list = text.split('\n')
             if not items_list[-1]:
                 items_list = items_list[:-1]
-            
+
             items = []
             for i in items_list:
                 items.append(i.split(':'))
@@ -2449,15 +2449,15 @@ class Main:
             text = ''
             for item in items:
                 if command == item[0]:
-                    item[1] = str(int(item[1])+1)
+                    item[1] = str(int(item[1]) + 1)
                 text = '{}{}:{}\n'.format(text, item[0], item[1])
         else:
             text = '{}{}:1\n'.format(text, command)
-        
-        file = open(dir_+'apps-use.txt', 'w')
+
+        file = open(dir_ + 'apps-use.txt', 'w')
         file.write(text)
         file.close()
-    
+
     def click_button_setting(self, command):
         self.animation_hide_swin()
         self.run(command)
@@ -2468,7 +2468,7 @@ class Main:
             item_ = item_lang
             lang = self.default_lang
         else:
-            item_ = '\n'+item+'='
+            item_ = '\n' + item + '='
             lang = ''
 
         start = text.find(item_)
@@ -2497,17 +2497,17 @@ class Main:
             return icon
         else:
             return ''
-    
+
     def get_shell_icon(self, icon_name):
         icon_theme = 'base-white'
-        return '/usr/share/navar/icons/shell/'+icon_theme+'/'+icon_name+'.png'
+        return '/usr/share/navar/icons/shell/' + icon_theme + '/' + icon_name + '.png'
 
     def convert2png(self, icon, icon_name):
         icons_dir = '{}/.config/navar/icons/'.format(os.path.expanduser('~'))
         if not os.path.exists(icons_dir):
-            os.system('mkdir -p '+icons_dir)
+            os.system('mkdir -p ' + icons_dir)
 
-        outfile = icons_dir+icon_name+'.png'
+        outfile = icons_dir + icon_name + '.png'
 
         if not os.path.exists(outfile):
             os.system(
@@ -2522,7 +2522,7 @@ class Main:
     def reverse(self, string):
         res = ''
         for i in range(len(string), 0, -1):
-            res += string[i-1]
+            res += string[i - 1]
         return res
 
     def create_icon(self, icon_name, size=(48, 48), shell=False):
@@ -2535,7 +2535,7 @@ class Main:
                 cairo.FORMAT_ARGB32,
                 int(width),
                 int(height)
-                )
+            )
             context = cairo.Context(surface)
             context.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
             svg.render_cairo(context)
@@ -2548,11 +2548,11 @@ class Main:
                 'BGRA',
                 0,
                 1
-                )
+            )
             if image.size != size:
                 image = image.resize(size, Image.ANTIALIAS)
             tk_image.paste(image)
-            return(tk_image)
+            return (tk_image)
 
         def create_image(icon, size):
             icon = Image.open(icon)
@@ -2657,12 +2657,12 @@ class Main:
         self.show_hide_windows_list()
 
         self.ewmh.display.flush()
-    
-    def show_desktop(self, wl):    # بعدا ممکنه پنهان شدن هم اضافه بشه
+
+    def show_desktop(self, wl):  # بعدا ممکنه پنهان شدن هم اضافه بشه
         for w in wl:
             states = self.ewmh.getWmState(w, str=True)
             states = list(states)
-            
+
             if '_NET_WM_STATE_HIDDEN' not in states:
                 self.ewmh.setWmState(w, 1, '_NET_WM_STATE_HIDDEN')
 
@@ -2679,7 +2679,7 @@ class Main:
         index = text.find(str(pid))
         if index != -1:
             index = text[index:].find('\n') + index
-            proc = text[index+1:text[index+1:].find('\n') + index + 1]
+            proc = text[index + 1:text[index + 1:].find('\n') + index + 1]
 
             return proc
 
